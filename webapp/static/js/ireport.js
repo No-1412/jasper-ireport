@@ -93,7 +93,7 @@ $(document).ready(function() {
       var columns = get_columns(sql);
       //向后台请求数据
       console.log(columns);
-      load_data("/query?sql=" + sql, columns);
+      // load_data("/query?sql=" + sql, columns);
     });
     //清空信息栏
     $(".ireport_msg").bind("click",
@@ -662,7 +662,7 @@ $(document).ready(function() {
         sql = $("#sql").val();
         var columns = get_columns(sql);
         //向后台请求数据
-        load_data("/query?sql=" + sql, columns);
+        // load_data("/query?sql=" + sql, columns);
     });
 
     //解析SQL并获取字段列表，返回一个数组

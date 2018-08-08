@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.util.JRProperties;
 
 public class GenReportText extends HttpServlet {
 

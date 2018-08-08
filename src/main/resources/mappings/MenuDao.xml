@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdom.dao.MenuDao">
+  
+  <sql id="Base_Column_List">
+    t.id as 'id', t.parent_id as 'parentMenu.id', t.parent_ids as 'parentIds',
+    t.name as 'name', t.href as 'href', t.target as 'target', t.icon as 'icon',
+    t.permission as 'permission', t.sort as 'sort', t.is_show as 'isShow',
+    t.remarks as 'remarks', t.del_flag as 'delFlag', t.create_time as 'createTime',
+    t.create_by as 'createBy', t.update_time as 'updateTime', t.update_by as 'updateBy'
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultType="menu">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_menu t
+    where t.id = #{id,jdbcType=TINYINT}
+  </select>
+
+  <select id="findByUserId" resultType="menu">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_menu t
+    join t_sys_role_menu rm on t.id=rm.menu_id
+    join t_sys_role r on r.id=rm.role_id and r.useable=1
+    join t_sys_user_role ur on ur.role_id=r.id
+    join t_sys_user u on u.id=ur.user_id and u.id=#{userId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_menu
+    where id = #{id,jdbcType=TINYINT}
+  </delete>
+  
+  <insert id="insert" parameterType="menu">
+    insert into t_sys_menu (id, parent_id, parent_ids,
+      name, href, target, 
+      icon, permission, sort, 
+      is_show, remarks, del_flag, 
+      create_time, create_by, update_time, 
+      update_by)
+    values (#{id,jdbcType=TINYINT}, #{parentMenu.id,jdbcType=TINYINT}, #{parentIds,jdbcType=TINYINT},
+      #{name,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT}, 
+      #{isShow,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.kingdom.model.Menu">
+    insert into t_sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentMenu.id != null">
+        parent_id,
+      </if>
+      <if test="parentIds != null">
+        parent_ids,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="href != null">
+        href,
+      </if>
+      <if test="target != null">
+        target,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="isShow != null">
+        is_show,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=TINYINT},
+      </if>
+      <if test="parentMenu.id != null">
+        #{parentMenu.id,jdbcType=TINYINT},
+      </if>
+      <if test="parentIds != null">
+        #{parentIds,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="href != null">
+        #{href,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=TINYINT},
+      </if>
+      <if test="isShow != null">
+        #{isShow,jdbcType=TINYINT},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdom.model.Menu">
+    update t_sys_menu
+    <set>
+      <if test="parentMenu.id != null">
+        parent_id = #{parentMenu.id,jdbcType=TINYINT},
+      </if>
+      <if test="parentIds != null">
+        parent_ids = #{parentIds,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="href != null">
+        href = #{href,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=TINYINT},
+      </if>
+      <if test="isShow != null">
+        is_show = #{isShow,jdbcType=TINYINT},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.kingdom.model.Menu">
+    update t_sys_menu
+    set parent_id = #{parentMenu.id,jdbcType=TINYINT},
+      parent_ids = #{parentIds,jdbcType=TINYINT},
+      name = #{name,jdbcType=VARCHAR},
+      href = #{href,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=TINYINT},
+      is_show = #{isShow,jdbcType=TINYINT},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+</mapper>

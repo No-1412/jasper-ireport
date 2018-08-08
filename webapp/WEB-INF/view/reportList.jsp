@@ -24,7 +24,7 @@
     <script type="text/javascript" src="js/bootstrap-select.js"></script>
     -->
     <script type="text/javascript" src="${ctxStatic}/js/select2.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/js/ireport.js"></script>
+    <%--<script type="text/javascript" src="${ctxStatic}/js/ireport.js"></script>--%>
 </head>
 <body>
 <!--
@@ -43,17 +43,16 @@
             <a class="navbar-brand" href="#">数据报表平台</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <!--
-                 <form class="navbar-form navbar-right">
-                   <div class="form-group">
-                     <input type="text" placeholder="Email" class="form-control">
-                   </div>
-                   <div class="form-group">
-                     <input type="password" placeholder="Password" class="form-control">
-                   </div>
-                   <button type="submit" class="btn btn-success">Sign in</button>
+                 <form class="navbar-form navbar-right" action="${ctx}/logout">
+                   <%--<div class="form-group">--%>
+                     <%--<input type="text" placeholder="Email" class="form-control">--%>
+                   <%--</div>--%>
+                   <%--<div class="form-group">--%>
+                     <%--<input type="password" placeholder="Password" class="form-control">--%>
+                   <%--</div>--%>
+                   <%--<button type="submit" class="btn btn-success">Sign in</button>--%>
+                   <button type="submit" class="btn btn-success">logout</button>
                  </form>
-                 -->
         </div>
         <!--/.navbar-collapse -->
     </div>
@@ -62,7 +61,7 @@
 <div class="container-fluid" style="margin-top:50px;">
     <div class="row">
         <!-- 左侧nav -->
-        <div class="col-md-2" style="width:21%; border-right:solid 1px rgb(134, 174, 203);; height:800px;">
+        <div style="width:21%; border-right:solid 1px rgb(134, 174, 203);; height:800px;">
             <div style="margin-top:30px;">
                 <!-- 一级分类管理 -->
                 <div class="btn-group">
@@ -306,10 +305,55 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-
             </div>
         </div>
     </div>
 </div>
+<div class="col-md-2">
+    <div></div>
+</div>
+<script>
+    /**
+     * todo 树需要调整 形状不对
+     * @param menu
+     * @param html
+     */
+    function extracted(menu, html) {
+        // console.log('威斯克->>>>>>>>>>> '+menu.childMenus.length)
+        console.log('威斯克->>>>>>>>>>> '+menu.childMenus)
+        if (menu.childMenus) {
+            // html += '<ul>';
+            $('.col-md-2').children().append('<ul>');
+            $.each(menu.childMenus, function () {
+                var clazz = this.childMenus ? 'icon-minus-sign' : 'icon-leaf';
+                // html += '<li>'
+                $('.col-md-2').children().append('<li>');
+                // if (this.href) $('.col-md-2').children().append('<a href="'+this.href+'">');
+                $('.col-md-2').children().append('<a href="'+this.href+'"><span><i class="'+clazz+'"></i>'+this.name+'</span>');
+                // if (!this.childMenus) html += '</a>';
+                if (this.href) $('.col-md-2').children().append('</a>');
+                console.log('威斯克1->>>>>>>>>>> '+this.name)
+                extracted(this, $('.col-md-2').children().html());
+                // html += '</li>';
+                // if (!this.childMenus)
+                    $('.col-md-2').children().append('</li>');
+                // alert('威斯克------------------>   '+html)
+            })
+            // html += '</ul>';
+            $('.col-md-2').children().append('</ul>');
+        }
+    }
+
+    $.post('${ctx}/showMenus',function(data){
+        // var html = '<ul><li><span><i class="icon-folder-open"></i>'+data.name+'</span>';
+        $('.col-md-2').children().html('<ul><li><span><i class="icon-folder-open"></i>'+data.name+'</span>');
+        // alert('begin------------------> '+html)
+        extracted(data, $('.col-md-2').children().html());
+        // html += '</li></ul>';
+        $('.col-md-2').children().append('</li></ul>');
+        // alert('end------------------> '+html)
+        // $('.col-md-2').children().html(html);
+    })
+</script>
 </body>
 </html>
